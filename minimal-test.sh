@@ -4,6 +4,9 @@
 echo "🚀 最小前端 + 後端測試腳本 (支援 TypeScript)"
 echo "============================================="
 
+# Source platform detection
+source ./platform-setup.sh
+
 # Function to cleanup containers
 cleanup() {
     echo "🧹 清理現有容器..."
@@ -15,14 +18,18 @@ cleanup() {
 start_services() {
     echo "🏗️ 建構和啟動服務..."
     
+    # Detect platform and create .env file
+    detect_platform
+    create_env_file
+    
     # Build images
     echo "建構映像..."
     docker build -t sep-prototype-frontend ./frontend
     docker build -t sep-prototype-backend ./backend
     
-    # Start backend (port 5001 to avoid macOS conflict)
-    echo "啟動後端 (埠號 5001)..."
-    docker run -d -p 5001:5000 --name backend-test sep-prototype-backend
+    # Start backend with platform-specific port
+    echo "啟動後端 (埠號 ${BACKEND_PORT})..."
+    docker run -d -p ${BACKEND_PORT}:5000 --name backend-test sep-prototype-backend
     
     # Wait a moment for backend to start
     sleep 3
@@ -42,9 +49,9 @@ test_services() {
     
     # Test backend
     echo -n "後端測試: "
-    if curl -s -f http://localhost:5001 > /dev/null; then
+    if curl -s -f ${BACKEND_URL} > /dev/null; then
         echo "✅ 成功"
-        echo "  後端回應: $(curl -s http://localhost:5001 | jq -r .message)"
+        echo "  後端回應: $(curl -s ${BACKEND_URL} | jq -r .message)"
     else
         echo "❌ 失敗"
     fi
@@ -80,7 +87,7 @@ case "$1" in
         echo ""
         echo "🎉 服務已啟動！"
         echo "前端: http://localhost:3000"
-        echo "後端: http://localhost:5001"
+        echo "後端: ${BACKEND_URL}"
         ;;
     "stop")
         cleanup

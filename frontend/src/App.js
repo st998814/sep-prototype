@@ -12,13 +12,23 @@ function App() {
 
   const checkBackendConnection = async () => {
     try {
-      const response = await fetch('http://localhost:5001');
+      // Try backend container name first (for container-to-container communication)
+      let response;
+      try {
+        response = await fetch('http://backend:5000');
+      } catch (containerError) {
+        // Fallback to localhost for development
+        const backendPort = process.env.REACT_APP_BACKEND_PORT || '5001';
+        response = await fetch(`http://localhost:${backendPort}`);
+      }
+      
       const data = await response.json();
-      setBackendStatus('connected');
+      setBackendStatus('✅ Connected');
       setBackendMessage(data.message);
     } catch (error) {
       setBackendStatus('❌ Connection failed');
       setBackendMessage('Unable to connect to backend service');
+      console.error('Backend connection error:', error);
     }
   };
 
@@ -39,14 +49,13 @@ function App() {
           <h3>🔗 Service URLs to Test:</h3>
           <ul>
             <li><strong>Frontend:</strong> http://localhost:3000 (Current page)</li>
-            <li><strong>Backend:</strong> http://localhost:5001</li>
+            <li><strong>Backend:</strong> http://localhost:5000 (Windows) / http://localhost:5001 (macOS)</li>
             <li><strong>InfluxDB:</strong> http://localhost:8086</li>
             <li><strong>Grafana:</strong> http://localhost:3001</li>
           </ul>
         </div>
         <button onClick={() => {
           checkBackendConnection();
-          window.location.reload();
         }} className="test-button">
           🔄 Refresh Test
         </button>

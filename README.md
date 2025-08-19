@@ -9,7 +9,7 @@ This is a prototype version for SEP (Influx Db ) built with a minimun architectu
 - **InfluxDB**: Time-series database (port 8086)
 - **Grafana**: Data visualization dashboard (port 3001)
 
-## Getting Started
+## Getting Started 
 
 ### Prerequisites
 
@@ -18,7 +18,7 @@ This is a prototype version for SEP (Influx Db ) built with a minimun architectu
 
 ### Quick Start with Docker Desktop
 
-#### Option 1: Using Docker Manager Script (Recommended)
+#### Option 1: Using Docker Manager Script 
 ```bash
 # Start all services
 ./docker-manager.sh start
@@ -36,7 +36,7 @@ This is a prototype version for SEP (Influx Db ) built with a minimun architectu
 ./docker-manager.sh clean
 ```
 
-#### Option 2: Using Docker Compose directly
+#### Option 2: Using Docker Compose directly (Prefered)
 ```bash
 # Start all services in background
 docker compose up --build -d
