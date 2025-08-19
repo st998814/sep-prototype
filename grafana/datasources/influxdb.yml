@@ -1,0 +1,17 @@
+apiVersion: 1
+
+datasources:
+  - name: InfluxDB
+    type: influxdb
+    access: proxy
+    url: http://influxdb:8086
+    database: sep-bucket
+    user: admin
+    secureJsonData:
+      password: password123
+      token: your-token-here
+    jsonData:
+      version: Flux
+      organization: sep-org
+      defaultBucket: sep-bucket
+      tlsSkipVerify: false
