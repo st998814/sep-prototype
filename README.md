@@ -1,11 +1,11 @@
-# SEP Prototype
+# Project Prototype
 
-This is a prototype application for SEP (Software Engineering Project) built with a microservices architecture using Docker.
+This is a prototype version for SEP (Influx Db ) built with a minimun architecture using Docker.
 
 ## Architecture
 
-- **Frontend**: React application (port 3000)
-- **Backend**: Node.js/Express API (port 5000)
+- **Frontend**: React application with TypeScript support (port 3000)
+- **Backend**: Node.js/Express API (port 5001) *Note: Changed from 5000 to avoid macOS conflicts*
 - **InfluxDB**: Time-series database (port 8086)
 - **Grafana**: Data visualization dashboard (port 3001)
 
@@ -67,7 +67,7 @@ If you're using VS Code, you can use the predefined tasks:
 
 3. Access the applications:
    - Frontend: http://localhost:3000
-   - Backend API: http://localhost:5000
+   - Backend API: http://localhost:5001
    - InfluxDB: http://localhost:8086
    - Grafana: http://localhost:3001
 
@@ -87,7 +87,8 @@ Once services are running, you can monitor them in Docker Desktop:
 
 ### Troubleshooting
 
-- **Port conflicts**: Make sure ports 3000, 3001, 5000, and 8086 are not used by other applications
+- **Port conflicts**: Make sure ports 3000, 3001, 5001, and 8086 are not used by other applications
+  - *Note: Backend uses port 5001 instead of 5000 to avoid macOS AirPlay conflicts*
 - **Docker not running**: Ensure Docker Desktop is started and running
 - **Build failures**: Try cleaning up with `./docker-manager.sh clean` and rebuild
 - **Service not accessible**: Wait a few minutes for services to fully start, especially InfluxDB
@@ -101,9 +102,15 @@ Once services are running, you can monitor them in Docker Desktop:
 
 ```
 sep-prototype/
-├── frontend/           # React frontend application
+├── frontend/           # React frontend application with TypeScript support
 │   ├── Dockerfile     # Frontend container configuration
-│   └── [React app files]
+│   ├── package.json   # React dependencies with TypeScript types
+│   ├── tsconfig.json  # TypeScript configuration
+│   ├── src/
+│   │   ├── component/ # TypeScript React components (.tsx)
+│   │   ├── App.js     # Main application component
+│   │   └── index.js   # Application entry point
+│   └── public/        # Static assets
 ├── backend/           # Node.js backend API
 │   ├── Dockerfile     # Backend container configuration
 │   ├── package.json   # Node.js dependencies
@@ -112,10 +119,28 @@ sep-prototype/
 ├── grafana/           # Grafana configuration files
 ├── docker-compose.yml # Docker services orchestration
 ├── env.docker         # Environment variables
+├── minimal-test.sh    # Minimal testing script with TypeScript support
+├── docker-manager.sh  # Docker management script
 └── README.md          # This file
 ```
 
 ## Development
+
+### Minimal Testing (Recommended for Development)
+
+```bash
+# Start frontend and backend containers for testing
+./minimal-test.sh start
+
+# Test services and TypeScript compilation
+./minimal-test.sh test
+
+# View logs
+./minimal-test.sh logs
+
+# Stop testing containers
+./minimal-test.sh stop
+```
 
 ### Backend Development
 
@@ -133,6 +158,4 @@ npm install
 npm start
 ```
 
-## License
 
-This project is licensed under the MIT License.
