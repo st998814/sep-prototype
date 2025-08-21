@@ -34,9 +34,15 @@ start_services() {
     # Wait a moment for backend to start
     sleep 3
     
-    # Start frontend
-    echo "啟動前端 (埠號 3000)..."
-    docker run -d -p 3000:3000 --name frontend-test sep-prototype-frontend
+    # Start frontend with volume mounts for hot reload
+    echo "啟動前端 (埠號 3000) - 支援熱重載..."
+    docker run -d -p 3000:3000 \
+        -v "$(pwd)/frontend/src:/app/src" \
+        -v "$(pwd)/frontend/public:/app/public" \
+        -v /app/node_modules \
+        -e CHOKIDAR_USEPOLLING=true \
+        -e WATCHPACK_POLLING=true \
+        --name frontend-test sep-prototype-frontend
     
     # Wait for frontend to start
     sleep 5
