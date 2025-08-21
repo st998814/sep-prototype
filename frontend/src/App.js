@@ -1,3 +1,5 @@
+// 
+
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import Testing from './component/testing';
@@ -23,10 +25,10 @@ function App() {
       }
       
       const data = await response.json();
-      setBackendStatus('✅ Connected');
+      setBackendStatus('Connected');
       setBackendMessage(data.message);
     } catch (error) {
-      setBackendStatus('❌ Connection failed');
+      setBackendStatus('Connection failed');
       setBackendMessage('Unable to connect to backend service');
       console.error('Backend connection error:', error);
     }
@@ -57,7 +59,7 @@ function App() {
         <button onClick={() => {
           checkBackendConnection();
         }} className="test-button">
-          🔄 Refresh Test
+          Refresh Test
         </button>
         <div className="typescript-test">
           <h3>TypeScript Component Test:</h3>

@@ -47,6 +47,9 @@ test_services() {
     echo ""
     echo "🧪 測試服務..."
     
+    # Set backend URL based on detected port
+    BACKEND_URL="http://localhost:${BACKEND_PORT}"
+    
     # Test backend
     echo -n "後端測試: "
     if curl -s -f ${BACKEND_URL} > /dev/null; then
@@ -94,6 +97,9 @@ case "$1" in
         echo "✅ 服務已停止"
         ;;
     "test")
+        # Load platform settings for testing
+        source ./platform-setup.sh
+        detect_platform
         test_services
         ;;
     "logs")
