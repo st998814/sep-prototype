@@ -158,4 +158,28 @@ npm install
 npm start
 ```
 
+## Port Management (Quick Shutdown)
+
+You may encounter port conflicts when running the SEP prototype, especially in a team environment. Use the provided script to quickly close all common ports or a specific port.
+
+### How to use
+
+#### 1. Close all common SEP prototype ports (macOS/Windows/WSL compatible)
+```sh
+./close-ports.sh
+```
+This will close ports: 3000, 5000, 5001, 8086, 3001
+
+#### 2. Close a specific port (e.g. 5000)
+```sh
+./close-ports.sh 5000
+```
+
+The script works on macOS, most Linux, and Windows WSL. It uses both `fuser` and `lsof` to ensure the port is released.
+
+If you see a permission error, try:
+```sh
+sudo ./close-ports.sh
+```
+
 

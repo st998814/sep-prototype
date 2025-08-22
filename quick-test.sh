@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Quick Docker Environment Test Script
-echo "🧪 Quick Docker Environment Test"
+echo "Quick Docker Environment Test"
 echo "================================"
 
 # Function to check if a port is open
@@ -10,10 +10,10 @@ check_port() {
     local service=$2
     echo -n "Checking $service (port $port): "
     if nc -z localhost $port 2>/dev/null; then
-        echo "✅ OPEN"
+        echo "OPEN"
         return 0
     else
-        echo "❌ CLOSED"
+    echo "CLOSED"
         return 1
     fi
 }
@@ -24,36 +24,36 @@ test_http() {
     local service=$2
     echo -n "Testing $service ($url): "
     if curl -s -f "$url" > /dev/null 2>&1; then
-        echo "✅ RESPONDING"
+        echo "RESPONDING"
         return 0
     else
-        echo "❌ NOT RESPONDING"
+    echo "NOT RESPONDING"
         return 1
     fi
 }
 
 echo ""
-echo "📊 Docker Status:"
+echo "Docker Status:"
 if docker info > /dev/null 2>&1; then
-    echo "✅ Docker is running"
+    echo "Docker is running"
 else
-    echo "❌ Docker is not running - Please start Docker Desktop"
+    echo "Docker is not running - Please start Docker Desktop"
     exit 1
 fi
 
 echo ""
-echo "📦 Container Status:"
+echo "Container Status:"
 docker compose ps
 
 echo ""
-echo "🌐 Port Availability Test:"
+echo "Port Availability Test:"
 check_port 3000 "Frontend"
 check_port 5001 "Backend" 
 check_port 8086 "InfluxDB"
 check_port 3001 "Grafana"
 
 echo ""
-echo "🔗 HTTP Response Test:"
+echo "HTTP Response Test:"
 test_http "http://localhost:3000" "Frontend"
 test_http "http://localhost:5001" "Backend"
 test_http "http://localhost:8086/health" "InfluxDB"

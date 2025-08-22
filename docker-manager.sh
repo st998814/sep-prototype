@@ -7,42 +7,42 @@ set -e
 
 case "$1" in
     "start")
-        echo "🚀 Starting SEP Prototype services..."
+    echo "Starting SEP Prototype services..."
         docker compose up --build -d
-        echo "✅ Services started! Check Docker Desktop for status."
-        echo "📱 Frontend: http://localhost:3000"
-        echo "🔌 Backend API: http://localhost:5000"
-        echo "📊 InfluxDB: http://localhost:8086"
-        echo "📈 Grafana: http://localhost:3001"
+    echo "Services started! Check Docker Desktop for status."
+    echo "Frontend: http://localhost:3000"
+    echo "Backend API: http://localhost:5000"
+    echo "InfluxDB: http://localhost:8086"
+    echo "Grafana: http://localhost:3001"
         ;;
     "stop")
-        echo "🛑 Stopping SEP Prototype services..."
+    echo "Stopping SEP Prototype services..."
         docker compose down
-        echo "✅ Services stopped!"
+    echo "Services stopped!"
         ;;
     "restart")
-        echo "🔄 Restarting SEP Prototype services..."
+    echo "Restarting SEP Prototype services..."
         docker compose down
         docker compose up --build -d
-        echo "✅ Services restarted!"
+    echo "Services restarted!"
         ;;
     "logs")
-        echo "📋 Showing logs for all services..."
+    echo "Showing logs for all services..."
         docker compose logs -f
         ;;
     "status")
-        echo "📊 Service status:"
+    echo "Service status:"
         docker compose ps
         ;;
     "clean")
-        echo "🧹 Cleaning up containers, networks, and images..."
+    echo "Cleaning up containers, networks, and images..."
         docker compose down --rmi all --volumes --remove-orphans
-        echo "✅ Cleanup completed!"
+    echo "Cleanup completed!"
         ;;
     "build")
-        echo "🔨 Rebuilding all services..."
+    echo "Rebuilding all services..."
         docker compose build --no-cache
-        echo "✅ Build completed!"
+    echo "Build completed!"
         ;;
     *)
         echo "SEP Prototype Docker Manager"

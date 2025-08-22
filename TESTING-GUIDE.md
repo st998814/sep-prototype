@@ -1,42 +1,33 @@
-# 🧪 最小 Docker 測試環境指南
 
-## ✅ 成功設置！
+# Minimal Docker Testing Guide
 
-您的 Docker 環境已經成功設置並測試通過。以下是測試結果和使用說明：
+## Setup Complete
 
-## 📊 當前狀態
+Your Docker environment is set up and tested. See results and usage below:
 
-- ✅ **前端容器**: 運行正常 (http://localhost:3000)
-- ✅ **後端容器**: 運行正常 (http://localhost:5001)
-- ✅ **Docker Desktop**: 正常運行
-- ✅ **最小 React 應用程式**: 部署成功
-- ✅ **Node.js Express API**: 部署成功
-- ✅ **前端 ↔ 後端連接**: 通信正常
+## Current Status
 
-## 🚀 最小測試步驟
+- Frontend container: running (http://localhost:3000)
+- Backend container: running (http://localhost:5001)
+- Docker Desktop: running
+- Minimal React app: deployed
+- Node.js Express API: deployed
+- Frontend <-> Backend connection: working
 
-### 1. 前端 + 後端一鍵測試（推薦）
+## Minimal Testing Steps
+
+### 1. One-click frontend + backend test (recommended)
 ```bash
-# 啟動前端和後端服務
-./minimal-test.sh start
-
-# 測試服務狀態
-./minimal-test.sh test
-
-# 停止所有服務
-./minimal-test.sh stop
+./minimal-test.sh start    # Start frontend and backend services
+./minimal-test.sh test     # Test service status
+./minimal-test.sh stop     # Stop all services
 ```
 
-### 2. 手動測試步驟
+### 2. Manual testing steps
 ```bash
-# 啟動後端 (埠號 5001 避免 macOS 衝突)
-docker run -d -p 5001:5000 --name backend-test sep-prototype-backend
-
-# 啟動前端
-docker run -d -p 3000:3000 --name frontend-test sep-prototype-frontend
-
-# 測試後端
-curl http://localhost:5001
+docker run -d -p 5001:5000 --name backend-test sep-prototype-backend   # Start backend (port 5001 for macOS)
+docker run -d -p 3000:3000 --name frontend-test sep-prototype-frontend # Start frontend
+curl http://localhost:5001                                            # Test backend
 
 # 檢查容器狀態
 docker ps

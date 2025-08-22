@@ -4,22 +4,22 @@
 detect_platform() {
     case "$(uname -s)" in
         Darwin*)
-            echo "🍎 Detected macOS - Using backend port 5001 (avoiding AirPlay conflicts)"
+            echo "Detected macOS - Using backend port 5001 (avoiding AirPlay conflicts)"
             export BACKEND_PORT=5001
             export BACKEND_URL="http://localhost:5001"
             ;;
         Linux*)
-            echo "🐧 Detected Linux - Using backend port 5000"
+            echo "Detected Linux - Using backend port 5000"
             export BACKEND_PORT=5000
             export BACKEND_URL="http://localhost:5000"
             ;;
         CYGWIN*|MINGW32*|MSYS*|MINGW*)
-            echo "🪟 Detected Windows - Using backend port 5000"
+            echo "Detected Windows - Using backend port 5000"
             export BACKEND_PORT=5000
             export BACKEND_URL="http://localhost:5000"
             ;;
         *)
-            echo "❓ Unknown platform - Using default backend port 5000"
+            echo "Unknown platform - Using default backend port 5000"
             export BACKEND_PORT=5000
             export BACKEND_URL="http://localhost:5000"
             ;;
@@ -49,9 +49,9 @@ INFLUXDB_BUCKET=sep-bucket
 GRAFANA_URL=http://localhost:3001
 EOF
 
-    echo "✅ Created .env file with platform-specific settings"
-    echo "📋 Backend will run on: ${BACKEND_URL}"
-    echo "🔗 Frontend will connect to backend via Docker network"
+    echo "Created .env file with platform-specific settings"
+    echo "Backend will run on: ${BACKEND_URL}"
+    echo "Frontend will connect to backend via Docker network"
 }
 
 # Run platform detection if script is executed directly

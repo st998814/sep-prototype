@@ -48,7 +48,7 @@ function App() {
           </div>
         </div>
         <div className="info-box">
-          <h3>🔗 Service URLs to Test:</h3>
+          <h3>Service URLs to Test:</h3>
           <ul>
             <li><strong>Frontend:</strong> http://localhost:3000 (Current page)</li>
             <li><strong>Backend:</strong> http://localhost:5000 (Windows) / http://localhost:5001 (macOS)</li>

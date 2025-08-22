@@ -1,7 +1,8 @@
 #!/bin/bash
 
+
 # Minimum Frontend + Backend Test Script with TypeScript Support
-echo "🚀 最小前端 + 後端測試腳本 (支援 TypeScript)"
+echo "Minimal Frontend + Backend Test Script (TypeScript Supported)"
 echo "============================================="
 
 # Source platform detection
@@ -9,33 +10,33 @@ source ./platform-setup.sh
 
 # Function to cleanup containers
 cleanup() {
-    echo "🧹 清理現有容器..."
+    echo "Cleaning up existing containers..."
     docker stop frontend-test backend-test 2>/dev/null || true
     docker rm frontend-test backend-test 2>/dev/null || true
 }
 
 # Function to start services
 start_services() {
-    echo "🏗️ 建構和啟動服務..."
+    echo "Building and starting services..."
     
     # Detect platform and create .env file
     detect_platform
     create_env_file
     
     # Build images
-    echo "建構映像..."
+    echo "Building images..."
     docker build -t sep-prototype-frontend ./frontend
     docker build -t sep-prototype-backend ./backend
     
     # Start backend with platform-specific port
-    echo "啟動後端 (埠號 ${BACKEND_PORT})..."
+    echo "Starting backend (port ${BACKEND_PORT})..."
     docker run -d -p ${BACKEND_PORT}:5000 --name backend-test sep-prototype-backend
     
     # Wait a moment for backend to start
     sleep 3
     
     # Start frontend with volume mounts for hot reload
-    echo "啟動前端 (埠號 3000) - 支援熱重載..."
+    echo "Starting frontend (port 3000) - hot reload enabled..."
     docker run -d -p 3000:3000 \
         -v "$(pwd)/frontend/src:/app/src" \
         -v "$(pwd)/frontend/public:/app/public" \
@@ -51,39 +52,39 @@ start_services() {
 # Function to test services
 test_services() {
     echo ""
-    echo "🧪 測試服務..."
+    echo "Testing services..."
     
     # Set backend URL based on detected port
     BACKEND_URL="http://localhost:${BACKEND_PORT}"
     
     # Test backend
-    echo -n "後端測試: "
+    echo -n "Backend test: "
     if curl -s -f ${BACKEND_URL} > /dev/null; then
-        echo "✅ 成功"
-        echo "  後端回應: $(curl -s ${BACKEND_URL} | jq -r .message)"
+    echo "Success"
+    echo "  Backend response: $(curl -s ${BACKEND_URL} | jq -r .message)"
     else
-        echo "❌ 失敗"
+    echo "Failed"
     fi
     
     # Test frontend
-    echo -n "前端測試: "
+    echo -n "Frontend test: "
     if curl -s -f http://localhost:3000 > /dev/null; then
-        echo "✅ 成功"
+    echo "Success"
     else
-        echo "❌ 失敗"
+    echo "Failed"
     fi
     
     # Test TypeScript compilation
-    echo -n "TypeScript 編譯測試: "
+    echo -n "TypeScript build test: "
     if docker exec frontend-test sh -c "cd /app && npx react-scripts build --only-typescript 2>/dev/null"; then
-        echo "✅ 成功"
-        echo "  TypeScript 元件編譯正常"
+    echo "Success"
+    echo "  TypeScript component build is valid"
     else
-        echo "⚠️  警告: TypeScript 直接編譯有問題，但 React Scripts 處理 TSX 正常"
+    echo "Warning: Direct TypeScript build failed, but React Scripts handles TSX correctly."
     fi
     
     echo ""
-    echo "📊 容器狀態:"
+    echo "Container status:"
     docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
 }
 
@@ -93,10 +94,10 @@ case "$1" in
         cleanup
         start_services
         test_services
-        echo ""
-        echo "🎉 服務已啟動！"
-        echo "前端: http://localhost:3000"
-        echo "後端: ${BACKEND_URL}"
+    echo ""
+    echo "Services started!"
+    echo "Frontend: http://localhost:3000"
+    echo "Backend: ${BACKEND_URL}"
         ;;
     "stop")
         cleanup
