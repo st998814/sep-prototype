@@ -7,6 +7,8 @@ const TestingComponent= () => {
       <p>This is a simple testing component.</p>
       <p>Test</p>
       <p>are u sure?</p>
+      <p>No</p>
+      <p>testing2</p>
 
     </div>
   );
