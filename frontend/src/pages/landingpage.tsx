@@ -1,15 +1,39 @@
-import React, { useState } from "react";
+// @ts-nocheck
 
-const App: React.FC = () => {
+import React, { useState } from "react";
+type AppProps = {
+  test?: string;
+  title?: string;                        
+  subtitle?: string;                     
+  placeholder?: string;                  
+  defaultQuery?: string;                 
+  onSearch?: (query: string) => void;    
+};
+const App: React.FC = ({test="login button"}) => {
   const [query, setQuery] = useState("");
 
   const handleSearch = () => {
     alert(`You searched: ${query}`);
+
   };
 
   return (
     <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
-      {/* 搜索栏 */}
+
+      <div style={{display:"flex",justifyContent:"flex-end",alignItems:"center", marginBottom: "20px" }}>        
+        <button style={{
+            marginLeft: "10px",
+            padding: "8px 12px",
+            border: "none",
+            borderRadius: "5px",
+            background: "#007bff",
+            color: "white",
+            cursor: "pointer",
+          }}>
+          {test}
+        </button>
+      </div>
+      {/* searching bar */}
       <div style={{ marginBottom: "20px" }}>
         <input
           type="text"
@@ -36,10 +60,12 @@ const App: React.FC = () => {
           }}
         >
           Search
-        </button>
-      </div>
+        </button>  
 
-      {/* 空白 sections */}
+      </div>
+    
+
+      {/* Empty sections */}
       <section
         style={{
           border: "1px dashed #ccc",

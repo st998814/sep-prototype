@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import Testing from './component/testing';
-
+import LandingPage from './pages/landingpage';
 function App() {
   const [backendStatus, setBackendStatus] = useState('checking...');
   const [backendMessage, setBackendMessage] = useState('');
@@ -33,7 +33,9 @@ function App() {
       console.error('Backend connection error:', error);
     }
   };
-
+  if(1){
+    return <LandingPage>11</LandingPage>
+  }
   return (
     <div className="App">
       <header className="App-header">
