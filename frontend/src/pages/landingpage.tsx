@@ -1,6 +1,7 @@
 // @ts-nocheck
 
 import React, { useState } from "react";
+import {MOCK_DATA, Item} from '../fake_data/fake_data'; //import Item for checking  and safety
 type AppProps = {
   test?: string;
   title?: string;                        
@@ -11,10 +12,15 @@ type AppProps = {
 };
 const App: React.FC = ({test="login button"}) => {
   const [query, setQuery] = useState("");
-
+  const [results, setResults] = useState<Item[]>([]);
   const handleSearch = () => {
     alert(`You searched: ${query}`);
-
+    const result=MOCK_DATA.filter((item:Item )=>
+      item.title.toLowerCase().includes(query.toLowerCase()) ||
+      item.description.toLowerCase().includes(query.toLowerCase())
+    );
+    setResults(result);
+    console.log(result);
   };
 
   return (
@@ -63,8 +69,23 @@ const App: React.FC = ({test="login button"}) => {
         </button>  
 
       </div>
-    
-
+    <div>here is the data after searching</div>
+    <ul>
+        {results.map((item: Item) => (
+          <li key={item.id}>
+            <strong>{item.title}</strong> ({item.category}): {item.description}
+          </li>
+        ))}
+    </ul>
+      <div>here is all the data</div>
+      <ul>
+        {MOCK_DATA.map((item: Item) => (
+          <li key={item.id}>
+            <strong>{item.title}</strong> ({item.category}): {item.description}
+          </li>
+        ))}
+      </ul>
+      <div>blank section below</div>
       {/* Empty sections */}
       <section
         style={{
