@@ -2,10 +2,8 @@
 
 import React, { useState } from "react";
 import { MOCK_DATA, Item } from "../fake_data/fake_data"; //import Item for checking  and safety
-import { DateRangePicker } from "react-date-range";
-import { addDays } from "date-fns";
-import "react-date-range/dist/styles.css";
-import "react-date-range/dist/theme/default.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 type AppProps = {
   test?: string;
@@ -15,18 +13,48 @@ type AppProps = {
   defaultQuery?: string;
   onSearch?: (query: string) => void;
 };
+
+const HOUR_TIME_RANGES = {
+  hour0: {
+    text: "Select time range...",
+    value: 0,
+  },
+  hour1: {
+    text: "Last hour",
+    value: 1,
+  },
+  hour2: {
+    text: "Last 2 hours",
+    value: 2,
+  },
+  hour5: {
+    text: "Last 5 hours",
+    value: 5,
+  },
+  hour12: {
+    text: "Last 12 hours",
+    value: 12,
+  },
+  hour24: {
+    text: "Last 24 hours",
+    value: 24,
+  },
+};
+
 const App: React.FC = ({ test = "login button" }) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Item[]>([]);
-  const [dateRange, setDateRange] = useState([
-    {
-      startDate: new Date(),
-      endDate: addDays(new Date(), 7),
-      key: "selection",
-    },
-  ]);
+  // const [dateRange, setDateRange] = useState([
+  //   {
+  //     startDate: new Date(),
+  //     endDate: addDays(new Date(), 7),
+  //     key: "selection",
+  //   },
+  // ]);
   const [searchedValue, setSearchedValue] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   const handleSearch = () => {
     alert(`You searched: ${query}`);
@@ -39,6 +67,27 @@ const App: React.FC = ({ test = "login button" }) => {
     console.log(result);
     setSearchedValue(query);
     setHasSearched(true);
+  };
+
+  const getLastHourRange = () => {
+    const end = new Date();
+    const start = new Date(end.getTime() - 60 * 60 * 1000); // subtract 1 hour in milliseconds
+    return { start, end };
+  };
+
+  const getLastNHoursRange = (hours: number) => {
+    const end = new Date();
+    const start = new Date(end.getTime() - hours * 60 * 60 * 1000);
+    return { start, end };
+  };
+
+  const handleTimeRangeChange = (hours: string) => {
+    const hoursNum = parseInt(hours);
+    if (hoursNum === 0) return; // Skip if default option selected
+
+    const { start, end } = getLastNHoursRange(hoursNum);
+    setStartDate(start);
+    setEndDate(end);
   };
 
   return (
@@ -88,17 +137,69 @@ const App: React.FC = ({ test = "login button" }) => {
             gap: "20px",
           }}
         >
-          <div>Date filter</div>
-          <DateRangePicker
+          <div>Date-Time filter</div>
+          {/* <DateRangePicker
             ranges={dateRange}
             onChange={(item) => setDateRange([item.selection])}
             moveRangeOnFirstSelection={false}
             months={2}
             direction="horizontal"
-          />
+          /> */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: "20px",
+              alignItems: "center",
+            }}
+          >
+            <DatePicker
+              selected={startDate}
+              onChange={(dates) => {
+                const [start, end] = dates;
+                setStartDate(start);
+                setEndDate(end);
+              }}
+              startDate={startDate}
+              endDate={endDate}
+              selectsRange
+              showTimeSelect
+              dateFormat="Pp"
+              placeholderText="Select Date Range"
+              isClearable
+              monthsShown={2}
+              inline
+            />
+            {/* <span>to</span>
+            <DatePicker
+              selected={endDate}
+              onChange={(date) => setEndDate(date)}
+              showTimeSelect
+              dateFormat="Pp"
+              placeholderText="End Date & Time"
+            /> */}
+            <select
+              onChange={(event) => handleTimeRangeChange(event.target.value)}
+              style={{
+                padding: "8px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+                width: "200px",
+              }}
+            >
+              {Object.values(HOUR_TIME_RANGES).map((hourFilter) => (
+                <option key={hourFilter.value} value={hourFilter.value}>
+                  {hourFilter.text}
+                </option>
+              ))}
+            </select>
+          </div>
           <div>
-            Selected date range: {dateRange[0].startDate.toLocaleDateString()}{" "}
-            to {dateRange[0].endDate.toLocaleDateString()}
+            {/* Selected date range: {dateRange[0].startDate.toLocaleDateString()}{" "}
+            to {dateRange[0].endDate.toLocaleDateString()} */}
+            Selected range:{" "}
+            {startDate ? startDate.toLocaleString() : "Start Date Not selected"}{" "}
+            to {endDate ? endDate.toLocaleString() : "End Date Not selected"}
           </div>
         </div>
         <div>
